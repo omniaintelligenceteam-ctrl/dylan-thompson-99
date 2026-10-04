@@ -1,6 +1,6 @@
 /* Dylan Thompson #99: the two bespoke moves on the hero.
-   1. Helmet reveal: the pointer leaves a fluid trail that shows his helmet over
-      his face. Touch has no hover, so there the scroll closes the helmet on.
+   1. Helmet reveal: the pointer, or a finger slid across his face, leaves a
+      fluid trail that shows his helmet. On touch the scroll also closes it on.
    2. Tear-off: past the hold, the bone hero peels away like a visor tear-off. */
 (function () {
   var hero = document.getElementById('hero');
@@ -58,33 +58,39 @@
     for (var i = 1; i <= steps; i++) {
       var px = last ? last.x + (x - last.x) * i / steps : x;
       var py = last ? last.y + (y - last.y) * i / steps : y;
-      blob(px, py, 19, 0.5);
+      blob(px, py, REACH, 0.5);
     }
     last = { x: x, y: y };
     lastMove = performance.now();
     dirty = true;
   }
   if (fine) window.addEventListener('pointermove', onMove, { passive: true });
+  // Touch: a finger slid across his face paints the helmet the same way. The
+  // listeners are passive, so a vertical slide still scrolls the page.
+  var REACH = fine ? 19 : 24;
+  function onTouch(e) { var t = e.touches[0]; if (t) onMove(t); }
+  window.addEventListener('touchstart', function (e) { last = null; onTouch(e); }, { passive: true });
+  window.addEventListener('touchmove', onTouch, { passive: true });
+  window.addEventListener('touchend', function () { last = null; }, { passive: true });
 
   function paint(p, now) {
     // decay the trail
     fx.globalCompositeOperation = 'destination-out';
-    fx.fillStyle = 'rgba(0,0,0,0.028)';
+    fx.fillStyle = fine ? 'rgba(0,0,0,0.028)' : 'rgba(0,0,0,0.013)'; // a finger's trail lingers longer
     fx.fillRect(0, 0, MW, MH);
     fx.globalCompositeOperation = 'source-over';
 
-    if (fine) {
-      // idle: the chin bar, full width and centred on his head, so the helmet
-      // reads as wrapping his jaw rather than as a patch stuck on his mouth.
-      // The helmet spans x 0.19 to 0.80 at this height and ends at y 0.545.
-      if (now - lastMove > 2200) {
-        var cy = MH * (0.492 + 0.008 * Math.sin(now / 900));
-        for (var bx = 0.2; bx <= 0.801; bx += 0.075) blob(MW * bx, cy, 14, 0.2);
-        for (var cx = 0.35; cx <= 0.651; cx += 0.075) blob(MW * cx, cy + MH * 0.045, 12, 0.2); // the chin tip
-        dirty = true;
-      }
-    } else {
-      // touch: scroll closes the helmet on from the chin up
+    // idle: the chin bar, full width and centred on his head, so the helmet
+    // reads as wrapping his jaw rather than as a patch stuck on his mouth.
+    // The helmet spans x 0.19 to 0.80 at this height and ends at y 0.545.
+    if (now - lastMove > 2200) {
+      var cy = MH * (0.492 + 0.008 * Math.sin(now / 900));
+      for (var bx = 0.2; bx <= 0.801; bx += 0.075) blob(MW * bx, cy, 14, 0.2);
+      for (var cx = 0.35; cx <= 0.651; cx += 0.075) blob(MW * cx, cy + MH * 0.045, 12, 0.2); // the chin tip
+      dirty = true;
+    }
+    if (!fine) {
+      // touch: scroll also closes the helmet on from the chin up
       var lvl = smooth(clamp((p - 0.03) / 0.3, 0, 1));
       if (lvl > 0) {
         var top = MH * (0.62 - lvl * 0.7);
