@@ -40,7 +40,10 @@ ul { padding: 0; list-style: none; }
 .cta--big { min-height: 64px; padding: 0 2.2rem; font-size: clamp(1.1rem, 1.6vw, 1.5rem); }
 
 /* ------------------------------------------------------------ 1 · hero -- */
-.hero__stage { background: var(--coal); overflow: hidden; }
+/* A sideways finger slide paints the helmet; pan-y keeps the browser from
+   reading it as a swipe back out of the page. Up and down still scrolls. */
+html { overscroll-behavior-x: none; }
+.hero__stage { background: var(--coal); overflow: hidden; touch-action: pan-y; }
 
 .under { position: absolute; inset: 0; display: grid; place-items: center; }
 .under__clay { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.62; }

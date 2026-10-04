@@ -83,7 +83,8 @@
     // idle: the chin bar, full width and centred on his head, so the helmet
     // reads as wrapping his jaw rather than as a patch stuck on his mouth.
     // The helmet spans x 0.19 to 0.80 at this height and ends at y 0.545.
-    if (now - lastMove > 2200) {
+    // Pointer only: a phone opens on his bare face until a finger or the scroll.
+    if (fine && now - lastMove > 2200) {
       var cy = MH * (0.492 + 0.008 * Math.sin(now / 900));
       for (var bx = 0.2; bx <= 0.801; bx += 0.075) blob(MW * bx, cy, 14, 0.2);
       for (var cx = 0.35; cx <= 0.651; cx += 0.075) blob(MW * cx, cy + MH * 0.045, 12, 0.2); // the chin tip
