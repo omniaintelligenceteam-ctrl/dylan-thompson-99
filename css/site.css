@@ -84,13 +84,13 @@ html { overscroll-behavior-x: none; }
 /* Tells a first-time visitor there is more below; gone once they start. */
 .scrollcue {
   position: absolute; left: 50%; bottom: clamp(1.2rem, 4vh, 2.6rem); translate: -50% 0;
-  display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.7rem 1rem 0.7rem 1.15rem;
+  padding: 0.75rem 1.15rem;
   border-radius: 999px; background: var(--coal); color: var(--bone); white-space: nowrap;
   font-size: 0.74rem; font-weight: 800; line-height: 1; text-transform: uppercase; letter-spacing: 0.08em;
   opacity: clamp(0, calc(1 - var(--sc-p, 0) * 16), 1); pointer-events: none;
 }
-.scrollcue svg { width: 0.75rem; height: auto; color: var(--sc-accent); animation: cue-bob 1.4s ease-in-out infinite; }
-@keyframes cue-bob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+.scrollcue span { display: block; animation: cue-pulse 1.6s ease-in-out infinite; }
+@keyframes cue-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
 .curl {
   position: absolute; top: -2%; left: 0; width: max(70px, 9vw); height: 104%;
@@ -235,5 +235,5 @@ html { overscroll-behavior-x: none; }
   .voice__line--a, .voice__line--b { transform: translate3d(-8%, 0, 0); }
   .voice__scrawl path { stroke-dashoffset: 0; }
   .scrollcue { opacity: 1; }
-  .scrollcue svg { animation: none; }
+  .scrollcue span { animation: none; }
 }
