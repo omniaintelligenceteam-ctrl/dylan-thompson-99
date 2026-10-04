@@ -81,6 +81,17 @@ html { overscroll-behavior-x: none; }
 .hero__name { font-family: var(--sc-font-display); text-transform: uppercase; font-size: clamp(1.5rem, 2.6vw, 2.6rem); line-height: 0.9; letter-spacing: -0.03em; }
 .hero__line { margin-top: 0.6rem; font-size: 0.95rem; line-height: 1.4; color: rgba(20,17,15,0.74); }
 
+/* Tells a first-time visitor there is more below; gone once they start. */
+.scrollcue {
+  position: absolute; left: 50%; bottom: clamp(1.2rem, 4vh, 2.6rem); translate: -50% 0;
+  display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.7rem 1rem 0.7rem 1.15rem;
+  border-radius: 999px; background: var(--coal); color: var(--bone); white-space: nowrap;
+  font-size: 0.74rem; font-weight: 800; line-height: 1; text-transform: uppercase; letter-spacing: 0.08em;
+  opacity: clamp(0, calc(1 - var(--sc-p, 0) * 16), 1); pointer-events: none;
+}
+.scrollcue svg { width: 0.75rem; color: var(--sc-accent); animation: cue-bob 1.4s ease-in-out infinite; }
+@keyframes cue-bob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+
 .curl {
   position: absolute; top: -2%; left: 0; width: max(70px, 9vw); height: 104%;
   transform-origin: 0 0; opacity: 0; pointer-events: none; will-change: transform;
@@ -97,6 +108,7 @@ html { overscroll-behavior-x: none; }
   .hero__name { font-size: 1.7rem; }
   .chip { max-width: 10.4rem; padding: 0.6rem 0.7rem; }
   .chip__sub, .bar__num { display: none; }
+  .scrollcue { left: auto; right: var(--sc-gutter); translate: none; }
 }
 
 /* ----------------------------------------------------------- 2 · voice -- */
@@ -222,4 +234,6 @@ html { overscroll-behavior-x: none; }
   .laps__row i { background: var(--on); }
   .voice__line--a, .voice__line--b { transform: translate3d(-8%, 0, 0); }
   .voice__scrawl path { stroke-dashoffset: 0; }
+  .scrollcue { opacity: 1; }
+  .scrollcue svg { animation: none; }
 }
