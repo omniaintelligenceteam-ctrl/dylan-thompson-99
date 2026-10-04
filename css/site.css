@@ -89,7 +89,7 @@ html { overscroll-behavior-x: none; }
   font-size: 0.74rem; font-weight: 800; line-height: 1; text-transform: uppercase; letter-spacing: 0.08em;
   opacity: clamp(0, calc(1 - var(--sc-p, 0) * 16), 1); pointer-events: none;
 }
-.scrollcue svg { width: 0.75rem; color: var(--sc-accent); animation: cue-bob 1.4s ease-in-out infinite; }
+.scrollcue svg { width: 0.75rem; height: auto; color: var(--sc-accent); animation: cue-bob 1.4s ease-in-out infinite; }
 @keyframes cue-bob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
 
 .curl {
