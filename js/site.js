@@ -1,6 +1,7 @@
 /* Dylan Thompson #99: the two bespoke moves on the hero.
-   1. Helmet reveal: the pointer, or a finger slid across his face, leaves a
-      fluid trail that shows his helmet. On touch the scroll also closes it on.
+   1. Helmet reveal: the page opens on his bare face. The pointer, or a finger
+      slid across it, leaves a fluid trail that shows his helmet. On touch the
+      scroll also closes it on.
    2. Tear-off: past the hold, the bone hero peels away like a visor tear-off. */
 (function () {
   var hero = document.getElementById('hero');
@@ -47,7 +48,7 @@
     fx.beginPath(); fx.arc(x, y, r, 0, 6.2832); fx.fill();
   }
 
-  var last = null, lastMove = -1e9, dirty = true;
+  var last = null, dirty = true;
   function onMove(e) {
     if (!rect) return;
     var x = (e.clientX - rect.left) / rect.width * MW;
@@ -61,7 +62,6 @@
       blob(px, py, REACH, 0.5);
     }
     last = { x: x, y: y };
-    lastMove = performance.now();
     dirty = true;
   }
   if (fine) window.addEventListener('pointermove', onMove, { passive: true });
@@ -80,16 +80,6 @@
     fx.fillRect(0, 0, MW, MH);
     fx.globalCompositeOperation = 'source-over';
 
-    // idle: the chin bar, full width and centred on his head, so the helmet
-    // reads as wrapping his jaw rather than as a patch stuck on his mouth.
-    // The helmet spans x 0.19 to 0.80 at this height and ends at y 0.545.
-    // Pointer only: a phone opens on his bare face until a finger or the scroll.
-    if (fine && now - lastMove > 2200) {
-      var cy = MH * (0.492 + 0.008 * Math.sin(now / 900));
-      for (var bx = 0.2; bx <= 0.801; bx += 0.075) blob(MW * bx, cy, 14, 0.2);
-      for (var cx = 0.35; cx <= 0.651; cx += 0.075) blob(MW * cx, cy + MH * 0.045, 12, 0.2); // the chin tip
-      dirty = true;
-    }
     if (!fine) {
       // touch: scroll also closes the helmet on from the chin up
       var lvl = smooth(clamp((p - 0.03) / 0.3, 0, 1));
